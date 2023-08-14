@@ -1,0 +1,27 @@
+[
+  {
+    "text": "Hello",
+    "intent": "custom",
+    "answer": "Hello! How can I assist you?"
+  },
+  {
+    "text": "Hi there",
+    "intent": "custom",
+    "answer": "Hello! How can I assist you?"
+  },
+  {
+    "text": "How are you?",
+    "intent": "custom",
+    "answer": "Hello! How can I assist you?"
+  },
+  {
+    "text": "What is your name?",
+    "intent": "custom",
+    "answer": "I'm a chatbot."
+  },
+  {
+    "text": "Who are you?",
+    "intent": "custom",
+    "answer": "I'm a chatbot."
+  }
+]
