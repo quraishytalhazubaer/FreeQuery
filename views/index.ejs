@@ -114,28 +114,37 @@
 
   <script>
     const recordButton = document.getElementById('recordButton');
+    const messageInput = document.getElementById('message');
     const conversationDiv = document.getElementById('conversation');
-
+  
     recordButton.addEventListener('click', () => {
       const recognition = new webkitSpeechRecognition();
       recognition.lang = 'en-US';
-
+  
       recognition.start();
-
-      recognition.onresult = function(event) {
+  
+      recognition.onresult = async function(event) {
         const audioText = event.results[0][0].transcript;
         console.log('Audio Text:', audioText);
-
+  
         const role = 'User';
         const message = audioText;
-        const messageElement = document.createElement('div');
-        messageElement.className = 'user-message';
-        messageElement.innerHTML = `
-          <div class="message-container">
-            <div class="message">${message}</div>
-          </div>
-        `;
-        conversationDiv.appendChild(messageElement);
+  
+        // Set the audio input as the message input value
+        messageInput.value = message;
+  
+        // Send the audio input to the server and receive the bot's response
+        const response = await fetch('/audio', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ audioText: message }),
+        }).then(response => response.json());
+  
+        // Display the bot's response in the conversation
+        const botMessageElement = createBotMessageElement(response.response);
+        conversationDiv.appendChild(botMessageElement);
       };
     });
   </script>
