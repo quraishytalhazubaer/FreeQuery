@@ -75,19 +75,24 @@ app.get('/', (req, res) => {
   app.post('/ask', async (req, res) => {
     const message = req.body.message;
     const response = await manager.process('en', message);
-  
+
     // Get or initialize the conversation history from the session
     const conversation = req.session.conversation || [];
-  
+
     // Update conversation array
     conversation.push({ role: 'User', message: message });
-    conversation.push({ role: 'Bot', message: response.answer });
-  
+
+    if (response.answer) {
+      conversation.push({ role: 'Bot', message: response.answer });
+    } else {
+      conversation.push({ role: 'Bot', message: "I'm sorry, I couldn't understand your input." });
+    }
+
     // Save the updated conversation history to the session
     req.session.conversation = conversation;
-  
+
     res.render('index.ejs', { response: response.answer, conversation: conversation });
-  });
+});
   
   
 app.post('/audio', async (req, res) => {
